@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "FCB-utils",
+        "repositoryURL": "https://github.com/denis-sancov/FCB-utils.git",
+        "state": {
+          "branch": null,
+          "revision": "ed00f086a659dca3ca8f16af3c68f3e1ef147356",
+          "version": "1.0.3"
+        }
+      },
+      {
+        "package": "RxSwift",
+        "repositoryURL": "https://github.com/ReactiveX/RxSwift.git",
+        "state": {
+          "branch": null,
+          "revision": "7e01c05f25c025143073eaa3be3532f9375c614b",
+          "version": "6.1.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
