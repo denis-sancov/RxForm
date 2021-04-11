@@ -2,6 +2,7 @@
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
+import Foundation
 
 let package = Package(
     name: "RxForm",
@@ -31,3 +32,10 @@ let package = Package(
     ],
     swiftLanguageVersions: [.v5]
 )
+
+if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
+  // #workaround(xcodebuild -version 11.6, Test targets don’t work on watchOS.) @exempt(from: unicode)
+  package.targets.removeAll(where: { $0.isTest })
+  // #workaround(xcodebuild -version 11.6, Tool targets don’t work on watchOS.) @exempt(from: unicode)
+  package.targets.removeAll(where: { $0.name.hasPrefix("generate") })
+}
