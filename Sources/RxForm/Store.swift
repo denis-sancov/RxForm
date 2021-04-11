@@ -9,7 +9,7 @@
 import RxSwift
 import RxCocoa
 
-fileprivate struct Box<I: Identity> {
+struct Box<I: Identity> {
     let identity: I
     let value: Any?
 
@@ -18,7 +18,7 @@ fileprivate struct Box<I: Identity> {
     }
 }
 
-public typealias StoreCallback<I: Identity> = (Store<I>, I?) -> Observable<()>
+public typealias StoreCallback<I: Identity> = (Store<I>, I) -> Observable<()>
 
 public final class Store<I: Identity>: Component {
     private var fields = [I: BehaviorRelay<Box<I>?>]()
@@ -47,11 +47,17 @@ public final class Store<I: Identity>: Component {
         identities: I...,
         callback: @escaping StoreCallback<I> = { _, _  in .empty() }
     ) -> Observable<()> {
-        
+        return observe(identities: identities, callback: callback)
+    }
+
+    public func observe(
+        identities: [I],
+        callback: @escaping StoreCallback<I> = { _, _  in .empty() }
+    ) -> Observable<()> {
         let observables = identities.map {
-            resolveRelay(for: $0)
+            getRelay(for: $0)
                 .asObservable()
-                .map { $0?.identity }
+                .compactMap { $0?.identity }
                 .withUnretained(self)
                 .flatMapLatest(callback)
         }
@@ -60,12 +66,12 @@ public final class Store<I: Identity>: Component {
     }
 
     public func set<T>(value: T?, identity: I) {
-        let relay = resolveRelay(for: identity)
+        let relay = getRelay(for: identity)
         relay.accept(.init(identity: identity, value: value))
     }
 
     public func value<T>(identity: I) -> T? {
-        let relay = resolveRelay(for: identity)
+        let relay = getRelay(for: identity)
         return relay.value?.cast()
     }
 
@@ -79,7 +85,7 @@ public final class Store<I: Identity>: Component {
         }
     }
 
-    private func resolveRelay(for identity: I, value: Box<I>? = nil) -> BehaviorRelay<Box<I>?> {
+    private func getRelay(for identity: I, value: Box<I>? = nil) -> BehaviorRelay<Box<I>?> {
         if let relay = fields[identity] {
             return relay
         }

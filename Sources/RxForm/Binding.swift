@@ -5,7 +5,7 @@
 //  Created by Denis Sancov on 3/14/21.
 //
 
-import Foundation
+import FCB_utils
 
 public typealias RowParams<T: Row, I: Identity> = (I, Store<I>) -> T.Params
 
@@ -38,7 +38,6 @@ public struct Bindings<I: Identity> {
         }
     }
 
-
     mutating func register<T: Row>(
         row: T.Type = T.self,
         identity: I,
@@ -50,13 +49,12 @@ public struct Bindings<I: Identity> {
 
     func instantiate(identity: I, store: Store<I>) -> AnyRow {
         fatalError()
-//        guard let binding = associations[identity] as? Binding<AnyRow> else {
+//        guard let binding = associations[identity] as? Binding<T> else {
 //            fatalError()
 //        }
-//        return binding.instantiate(identity: identity, store: store)
+////        return binding.instantiate(identity: identity, store: store)
     }
 }
-
 
 public struct KeyBindings<I: Identity> {
 
@@ -81,34 +79,9 @@ public struct KeyBindings<I: Identity> {
 //    }
 }
 
-func test<I: Identity>(identity: I) {
-    var bindings = Bindings<I> {
-        
-    }
-
-    bindings.register(row: TextRow<I, String>.self, identity: identity) { _, _ in
-        
-    }
-
-    bindings.register(row: SwitchRow.self, identity: identity) { _, _ in
-        .init(caption: "")
-    }
-
-    var tb = KeyBindings<I>()
-}
-
-//public struct ConcreteBindingStrategy: BindingStrategy {
-//    public typealias BindingType = ConcreteBinding
-//}
-
-//struct TypeBindingStrategy: BindingStrategy {
-//
-//}
-
 public protocol AnyBinding {
 
 }
-
 
 public struct Binding<T: Row>: AnyBinding {
     public typealias I = T.I
@@ -131,13 +104,3 @@ public struct Binding<T: Row>: AnyBinding {
         return row
     }
 }
-//
-//public struct TypeBinding<T: Row, I>: Binding where T.I == I {
-//    public let type: I.Type
-//    public let params: RowParams<T, I>
-//
-//    public func associated(with identity: I) -> Bool {
-//        return false
-//    }
-//}
-

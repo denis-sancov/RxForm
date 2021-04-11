@@ -7,6 +7,11 @@
 
 import Foundation
 
+public enum Text {
+    case plain(value: String)
+    case attributed(value: NSAttributedString)
+}
+
 public struct SwitchRow<I: Identity>: ValueRow  {
     public typealias Value = Bool
 
@@ -28,9 +33,11 @@ public struct SwitchRow<I: Identity>: ValueRow  {
 
     public struct Params {
         public let caption: String?
+        public let text: Text?
 
-        public init(caption: String?) {
+        public init(caption: String?, text: Text? = nil) {
             self.caption = caption
+            self.text = text
         }
     }
 }

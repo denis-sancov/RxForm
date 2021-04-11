@@ -1,5 +1,5 @@
 //
-//  Component.swift
+//  DepositReviewType.swift
 //  RxForm
 //
 //  Created by Denis Sancov on 2/16/21.
@@ -8,5 +8,7 @@
 
 import Foundation
 
-public protocol Component {
+
+enum DepositReviewType {
+    case account, newCard;
 }

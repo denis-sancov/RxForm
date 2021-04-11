@@ -10,18 +10,17 @@ import RxSwift
 import RxCocoa
 import FCB_utils
 
-struct Test: AnyRow {
-
-}
-
 public final class Form<I: Identity> {
     private let _refresh = BehaviorRelay(value: Date())
     private let _reset = BehaviorRelay(value: Date())
 
     private let store: Store<I>
+
     private let defaults: Defaults<I>
     private let observables: [Observable<()>]
     private let bindings: Bindings<I>
+
+    private let rules: [Observable<Bool>]
 
     public lazy var rows = _reset
         .flatMapLatest { [unowned self] _ in self.defaults.builder(self.store) }
@@ -41,6 +40,8 @@ public final class Form<I: Identity> {
 //            return Observable.just(State<Any>.error(err: $0))
 //        }
 
+//    public lazy var isValid: Observable<Bool> = Observable.merge(rules)
+
     public init(@Form.Builder builder: @escaping () -> [Component]) {
         let components = builder()
 
@@ -48,6 +49,8 @@ public final class Form<I: Identity> {
         self.defaults = components.firstAs()!
         self.observables = []//components.firstAs()
         self.bindings = components.firstAs()!
+
+        self.rules = []
     }
 
     public func refresh() {
@@ -65,12 +68,3 @@ public final class Form<I: Identity> {
         }
     }
 }
-
-//extension ObservableType {
-//    func myDebug(identifier: String) -> Observable<Self.E> {
-//        return Observable.create { observer in
-//
-//            return Disposables.create()
-//        }
-//    }
-//}

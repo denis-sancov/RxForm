@@ -8,7 +8,6 @@
 import Foundation
 
 public protocol AnyRow {
-
 }
 
 public protocol Row: AnyRow {

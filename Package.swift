@@ -6,7 +6,8 @@ import PackageDescription
 let package = Package(
     name: "RxForm",
     platforms: [
-      .iOS(.v10)
+        .iOS(.v10),
+        .macOS(.v10_12)
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
@@ -24,7 +25,9 @@ let package = Package(
             dependencies: [
                 "RxSwift", .product(name: "RxCocoa", package: "RxSwift"), "FCB-utils"
             ]
-        )
+        ),
+        .testTarget(name: "RxFormTests", dependencies: ["RxForm"]),
+
     ],
     swiftLanguageVersions: [.v5]
 )
