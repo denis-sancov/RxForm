@@ -10,55 +10,65 @@ import RxSwift
 import RxCocoa
 import FCB_utils
 
-public final class Form<I: Identity> {
+public final class Form<T, A: Adapter> where A.T == T {
     private let _refresh = BehaviorRelay(value: Date())
-    private let _reset = BehaviorRelay(value: Date())
+    private let _reload = BehaviorRelay(value: Date())
 
-    private let store: Store<I>
+    private let store: Store<T>
+    private var adapter: A
 
-    private let defaults: Defaults<I>
-    private let observables: [Observable<()>]
-    private let bindings: Bindings<I>
+    public lazy var rows = _reload
 
-    private let rules: [Observable<Bool>]
 
-    public lazy var rows = _reset
-        .flatMapLatest { [unowned self] _ in self.defaults.builder(self.store) }
-        .flatMapLatest { [unowned self] _ -> Observable<Any> in
-            var streams: [Observable<()>] = []
+    func test() {
+        adapter.prepare(store: store)
+        adapter.types(store: store)
+        adapter.resolve(store: store)
+    }
 
-            streams.append(self._refresh.map { _ in })
-            streams.append(contentsOf: self.observables)
-
-            return Observable.merge(streams).map { [unowned self] in
-                self.store.getIds().map {
-                    self.bindings.instantiate(identity: $0, store: self.store)
-                }
-            }
-        }
+//        .flatMapLatest { [unowned self] _ in self.defaults.builder(self.store) }
+//        .flatMapLatest { [unowned self] _ -> Observable<Any> in
+//            var streams: [Observable<()>] = []
+//
+//            streams.append(self._refresh.map { _ in })
+//            streams.append(contentsOf: self.observables)
+//
+//            return Observable.merge(streams).map { [unowned self] in
+//                self.store.getIds().map {
+//                    self.bindings.instantiate(identity: $0, store: self.store)
+//                }
+//            }
+//        }
 //        .catch {
 //            return Observable.just(State<Any>.error(err: $0))
 //        }
 
 //    public lazy var isValid: Observable<Bool> = Observable.merge(rules)
 
-    public init(@Form.Builder builder: @escaping () -> [Component]) {
-        let components = builder()
+    public init(adapter: A) {
+        self.store = Store()
+        self.adapter = adapter
+    }
 
-        self.store = components.firstAs() ?? Store()
-        self.defaults = components.firstAs()!
-        self.observables = []//components.firstAs()
-        self.bindings = components.firstAs()!
-
-        self.rules = []
+    public func set(adapter: A) {
+        self.adapter = adapter
+        reload()
     }
 
     public func refresh() {
         _refresh.accept(Date())
     }
 
-    public func reset() {
-        _reset.accept(Date())
+    public func reload(keepState: Bool = true) {
+        if !keepState {
+            store.clear()
+        }
+        
+        _reload.accept(Date())
+    }
+
+    public func clear() {
+        reload(keepState: false)
     }
 
     @_functionBuilder

@@ -8,7 +8,7 @@
 
 @testable import RxForm
 
-enum DepositReviewRow : CaseIterable, Identity {
+enum DepositReviewRow : CaseIterable, RowType {
     case type,
          account,
          agency,
@@ -35,7 +35,7 @@ enum DepositReviewRow : CaseIterable, Identity {
 //func createForm() {
 //    let form = Form<DepositReviewRow> {
 //        Defaults<DepositReviewRow> {
-//            $0.set(value: DepositReviewType.account, identity: .type)
+//            $0.set(value: DepositReviewType.account, id: .type)
 //
 //            $0.set(value: 100, identity: .amount)
 //

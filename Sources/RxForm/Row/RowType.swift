@@ -8,6 +8,7 @@
 
 import Foundation
 
-public protocol Identity: Hashable {
+public protocol RowType: Hashable {
+    var order: Int { get }
 }
 

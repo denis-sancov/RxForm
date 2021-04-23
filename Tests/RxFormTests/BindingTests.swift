@@ -10,6 +10,17 @@ import XCTest
 
 final class BindingTests: XCTestCase {
     func testRegister() {
+//        let typeBindings = TypeBindings<TestRow> {
+////            TypeBindings.Component(binding: SwitchRow<TestRow>.self) { _,_ in
+////                .init()
+////            }
+//        }
+
+//        let bindings = IdentityBindings<TestRow> {
+////            BindingComponent<SwitchRow<TestRow>>(identity: .username) { (_, _) in
+////                .init()
+////            }
+//        }
 //        private let bindings = Bindings<TestRow>(builder: <#() -> [BindingPair<TestRow>]#>)
 
 //        // This is an example of a functional test case.
@@ -32,7 +43,7 @@ final class BindingTests: XCTestCase {
 }
 
 
-fileprivate enum TestRow : CaseIterable, Identity {
+fileprivate enum TestRow : CaseIterable, RowType {
     case username,
          age,
          isParent

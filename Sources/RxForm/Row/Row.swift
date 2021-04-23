@@ -11,11 +11,11 @@ public protocol AnyRow {
 }
 
 public protocol Row: AnyRow {
-    associatedtype I: Identity
+    associatedtype I: RowType
     associatedtype Params = Void
 
-    var identity: I { get }
+    var id: I { get }
     var params: Params { get }
 
-    init(identity: I, params: Params)
+    init(id: I, params: Params)
 }

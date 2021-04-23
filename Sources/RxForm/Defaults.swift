@@ -8,7 +8,7 @@
 
 import RxSwift
 
-public struct Defaults<I: Identity>: Component {
+public struct Defaults<I: RowType>: Component {
     let builder: (Store<I>) -> Observable<()>
 
     public init(@Defaults.Builder builder: @escaping (Store<I>) -> Observable<()>) {

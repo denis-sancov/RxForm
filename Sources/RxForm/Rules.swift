@@ -8,7 +8,7 @@
 
 import RxSwift
 
-public struct Rules<I: Identity>: Component {
+public struct Rules<I: RowType>: Component {
     let builder: (Store<I>) -> Observable<Bool>
 
     public init(@Rules.Builder builder: @escaping (Store<I>) -> Observable<Bool>) {
