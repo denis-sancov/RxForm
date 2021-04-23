@@ -18,7 +18,7 @@ struct Box<Type: RowType> {
     }
 }
 
-public final class Store<Type: RowType>: Component {
+public final class Store<Type: RowType> {
     var relays = [Type: BehaviorRelay<Box<Type>?>]()
 
     public var types: [Type] {

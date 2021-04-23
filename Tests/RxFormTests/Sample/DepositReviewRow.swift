@@ -7,8 +7,9 @@
 //
 
 @testable import RxForm
+@testable import RxSwift
 
-enum DepositReviewRow : CaseIterable, RowType {
+enum DepositReviewRow : Int, CaseIterable, RowType {
     case type,
          account,
          agency,
@@ -28,6 +29,24 @@ enum DepositReviewRow : CaseIterable, RowType {
         default:
             return nil
         }
+    }
+
+    var order: Int {
+        return rawValue
+    }
+}
+
+struct DepositAdapter: Adapter {
+    func prepare(store: Store<T>) -> Observable<()> {
+        return .empty()
+    }
+
+    func types(store: Store<T>) -> [T] {
+        return DepositReviewRow.all
+    }
+
+    func observables(store: Store<T>) -> [Observable<()>] {
+        return []
     }
 }
 

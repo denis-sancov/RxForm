@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol Binder: Component {
+public protocol Binder {
     associatedtype T: RowType
 
     func instantiate(type: T, store: Store<T>) -> AnyRow
