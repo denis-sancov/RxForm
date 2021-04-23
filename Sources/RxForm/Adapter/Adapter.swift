@@ -33,15 +33,15 @@ public extension Adapter {
     }
 }
 
-public protocol BindingAdapter: Adapter {
+public protocol BinderAdapter: Adapter {
     associatedtype B: Binder where B.T == T
 
     var binder: B { get }
 
-    func resolve(store: Store<T>) -> [AnyRow]
+    func setup(binder: B)
 }
 
-public extension BindingAdapter {
+public extension BinderAdapter {
     func resolve(store: Store<T>) -> [AnyRow] {
         return types(store: store).map {
             binder.instantiate(type: $0, store: store)

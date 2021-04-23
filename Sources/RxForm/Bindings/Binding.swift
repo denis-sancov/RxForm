@@ -9,7 +9,7 @@ import FCB_utils
 
 public protocol AnyBinding {
 //    associatedtype T: AnyRow
-    func instantiate<I: RowType>(id: I, store: Store<I>) -> AnyRow
+    func instantiate<T: RowType>(type: T, store: Store<T>) -> AnyRow
 }
 
 public typealias RowParams<T: Row, I: RowType> = (I, Store<I>) -> T.Params
@@ -28,7 +28,7 @@ public struct Binding<T: Row>: AnyBinding {
         return T(id: id, params: params(id, store))
     }
 
-    public func instantiate<I>(id: I, store: Store<I>) -> AnyRow where I : RowType {
+    public func instantiate<I>(type id: I, store: Store<I>) -> AnyRow where I : RowType {
 
         fatalError()
     }

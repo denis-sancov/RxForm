@@ -37,6 +37,18 @@ import Foundation
 ////    }
 //}
 
+public struct KeyBinding<T: RowType>: Binder {
+    private var associations: [String: AnyBinding]
+
+    public init() {
+        associations = [:]
+    }
+
+    public func instantiate(type: T, store: Store<T>) -> AnyRow {
+        fatalError()
+    }
+}
+
 public struct BindingComponent<I> {
     let identity: I
     let binding: AnyBinding

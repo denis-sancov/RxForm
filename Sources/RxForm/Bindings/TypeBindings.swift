@@ -7,8 +7,25 @@
 
 import Foundation
 
-//public struct TypeBindings<I: RowType>: Binder {
-//    private let associations: [String: Provider<AnyRow>]
+public struct TypeBindings<T: RowType>: Binder {
+    private var associations: [T: AnyBinding]
+
+    public init() {
+        associations = [:]
+    }
+
+    public func register() {
+
+    }
+
+    public func instantiate(type: T, store: Store<T>) -> AnyRow {
+        guard let row = associations[type] else {
+            fatalError("no row is available for identity = \(type)")
+        }
+        return row.instantiate(type: type, store: store)
+    }
+}
+//
 //
 ////    @TypeBindings.Builder<I> builder: @escaping () -> [Component<I>]
 //
@@ -29,13 +46,7 @@ import Foundation
 //    }
 //
 //    public func instantiate(id: I, store: Store<I>) -> AnyRow {
-//        let type = String(describing: id)
-//
-//        guard let row = associations[type] else {
-//            fatalError("no row is available for identity = \(id)")
-//        }
-//        
-//        return row.build()
+
 //    }
 //
 //    public struct Provider<T: AnyRow> {
