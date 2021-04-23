@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 import FCB_utils
 
-public typealias RowsState = State<AnyRow>
+public typealias RowsState = State<[AnyRow]>
 
 public final class Form<T, A: Adapter> where A.T == T {
     private let refresh = BehaviorRelay(value: Date())
@@ -32,14 +32,14 @@ public final class Form<T, A: Adapter> where A.T == T {
                     return Observable
                         .merge(triggers)
                         .map {
-                            .success(rows: self.adapter.resolve(store: self.store))
+                            .success(self.adapter.resolve(store: self.store))
                         }
                 }
 
-            return .concat(.just(.loading), rows)
+            return .concat(.just(.loading()), rows)
         }
         .catch {
-            return .just(.error(err: $0))
+            return .just(.failed(err: $0))
         }
 
 
